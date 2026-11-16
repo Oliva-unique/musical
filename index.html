@@ -181,6 +181,30 @@ main{
 .tip img{width:40px;flex:none}
 .tip b{color:var(--cream);font-weight:normal;font-family:"CookieRun"}
 
+.cast{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cast li{
+  font-family:"CookieRun";font-weight:700;font-size:13.5px;
+  background:rgba(255,246,227,.12);color:var(--cream);
+  padding:4px 11px;border-radius:999px;transition:background .2s,color .2s,transform .2s;
+}
+.cast li.hit{background:var(--lime);color:var(--ink);transform:scale(1.08)}
+.card.hit{border-color:var(--lime);box-shadow:0 0 0 4px rgba(168,216,78,.35),0 10px 0 rgba(0,0,0,.18)}
+
+.finder{
+  position:relative;z-index:1;
+  display:flex;align-items:center;gap:10px;
+  background:var(--cream);border-radius:22px;padding:8px 14px 8px 10px;
+  box-shadow:0 5px 0 #cdbf9f;margin:6px 0 4px;
+}
+.finder img{width:40px;height:40px;flex:none}
+.finder input{
+  flex:1;min-width:0;border:0;background:transparent;outline:none;
+  font-family:"Dovemayo",sans-serif;font-size:16px;color:var(--ink);padding:10px 0;
+}
+.finder input::placeholder{color:#9a8fb8}
+.find-msg{min-height:1.4em;margin:8px 6px 0;font-size:14.5px;color:var(--lime);position:relative;z-index:1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
 /* ---------- 장식 ---------- */
 .deco{position:absolute;pointer-events:none;z-index:0}
 .deco.spider{top:-6px;right:6%;width:54px;animation:dangle 4s ease-in-out infinite;transform-origin:top center}
@@ -223,6 +247,12 @@ footer{
 
 <main>
   <img class="deco spider" src="images/spider.png" alt="">
+  <div class="finder">
+    <img src="images/witch-hat.png" alt="">
+    <label for="find" class="sr">이름으로 찾기</label>
+    <input id="find" type="search" placeholder="아이 영어 이름으로 찾기 (예: Ella)" autocomplete="off" autocapitalize="off" spellcheck="false">
+  </div>
+  <p class="find-msg" id="findMsg" aria-live="polite"></p>
   <h2 class="section-title" aria-label="영상"><img src="images/clapper.png" alt=""></h2>
   <div id="videos"></div>
 
@@ -251,9 +281,15 @@ footer{
    비워 두면 "영상 준비 중"으로 보여요
    ========================================================= */
 const VIDEOS = [
-  { title: "초3A The Pumpkin Ghost on Halloween Night",  sub: "준비 중", icon: "pumpkin",  link: "" },
-  { title: "초3B Haunted Halloween Party",  sub: "준비 중", icon: "ghost",    link: "" },
-  { title: "초3C Haunted Halloween Party",  sub: "준비 중", icon: "cauldron", link: "" },
+  { title: "초3A The Pumpkin Ghost on Halloween Night", icon: "pumpkin",
+    cast: ["Bailey", "Brody", "Ella", "Lia", "Lucy", "Sion"],
+    link: "https://drive.google.com/file/d/11wBrsODhDQf3PirkS9rPA4w4BXyrLL3c/view?usp=sharing" },
+  { title: "초3B Haunted Halloween Party", icon: "ghost",
+    cast: ["Christy", "Ethan", "Joy", "Olivia"],
+    link: "https://drive.google.com/file/d/1AZcDqPg85vqzKihXkf-QEdT8xYWRFbcX/view?usp=drive_link" },
+  { title: "초3C Haunted Halloween Party", icon: "cauldron",
+    cast: ["Bella", "Chase", "Julie", "Victor"],
+    link: "https://drive.google.com/file/d/1cUZ3_WfdvjXOwNuzkqLabZMCF9E3rGsq/view?usp=sharing" },
 ];
 /* ========================================================= */
 
@@ -269,10 +305,11 @@ VIDEOS.forEach((v,i)=>{
   const id = driveId(v.link);
   const card = document.createElement("article");
   card.className = "card";
+  card.id = "video-"+(i+1);
   card.innerHTML = `
     <div class="card-head">
       <div class="num"><img src="images/${esc(v.icon||"pumpkin")}.png" alt=""></div>
-      <div><h2>${esc(v.title)}</h2>${v.sub?`<small>${esc(v.sub)}</small>`:""}</div>
+      <div><h2>${esc(v.title)}</h2>${v.sub?`<small>${esc(v.sub)}</small>`:""}${(v.cast||[]).length?`<ul class="cast" aria-label="출연">${[...v.cast].sort((x,y)=>x.localeCompare(y)).map(n=>`<li data-name="${esc(n.toLowerCase())}">${esc(n)}</li>`).join("")}</ul>`:""}</div>
     </div>
     <div class="player">
       ${id
@@ -297,6 +334,27 @@ VIDEOS.forEach((v,i)=>{
   }
   wrap.appendChild(card);
 });
+
+const findInput = document.getElementById("find");
+const findMsg = document.getElementById("findMsg");
+let findTimer;
+findInput.addEventListener("input", ()=>{
+  clearTimeout(findTimer);
+  findTimer = setTimeout(runFind, 250);
+});
+findInput.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); runFind(true); findInput.blur(); } });
+function runFind(scroll){
+  const q = findInput.value.trim().toLowerCase();
+  document.querySelectorAll(".hit").forEach(el=>el.classList.remove("hit"));
+  if(!q){ findMsg.textContent=""; return; }
+  const hits = [...document.querySelectorAll(".cast li")].filter(li=>li.dataset.name.startsWith(q));
+  if(!hits.length){ findMsg.textContent = "이름을 찾지 못했어요. 영어 철자를 확인해 주세요."; return; }
+  hits.forEach(li=>{ li.classList.add("hit"); li.closest(".card").classList.add("hit"); });
+  const first = hits[0].closest(".card");
+  const cls = first.querySelector("h2").textContent.split(" ")[0];
+  findMsg.textContent = hits.length===1 ? `${hits[0].textContent} → ${cls} 영상이에요 👇` : `${hits.length}명을 찾았어요 👇`;
+  if(scroll || hits.length===1) first.scrollIntoView({behavior:"smooth", block:"start"});
+}
 </script>
 </body>
 </html>
