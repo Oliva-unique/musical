@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Christmas Musical · 해운대 · Unique English</title>
+<meta name="description" content="유니크 잉글리시 해운대 크리스마스 뮤지컬 영상">
+<meta property="og:title" content="🎄 Christmas Musical · 해운대">
+<meta property="og:description" content="유니크 잉글리시 뮤지컬 영상 보기 · 고화질 다운로드">
+<meta property="og:image" content="../images/xmas/banner.jpg">
+<link rel="icon" href="../images/xmas/tree.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* =====================================================
+   영상 바꾸는 곳은 맨 아래 <script> 안 VIDEOS 목록이에요.
+   ===================================================== */
+:root{
+  --night:#1d2f6b; --night2:#2a4290; --red:#e5484d; --red-d:#c53a3f;
+  --green:#3f9a5a; --gold:#f5c33b; --snow:#fffdf8; --ink:#2b2f45; --soft:#6b7090;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--night)}
+body{
+  font-family:'Jua','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  color:var(--ink);min-height:100vh;
+  background:#eef3ff;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+
+/* ---------- falling snow ---------- */
+.snow{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.snow i{position:absolute;top:-12px;border-radius:50%;background:#fff;opacity:.85;
+  animation:fall linear infinite}
+@keyframes fall{to{transform:translate3d(var(--dx),110vh,0)}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:clamp(440px,62vw,780px);overflow:hidden;background:var(--night)}
+.hero .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom}
+.hero .top{position:relative;z-index:2;text-align:center;padding:34px 16px 0;color:#fff}
+.logo{width:64px;height:64px;margin:0 auto 10px;border-radius:50%;background:#fff;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);object-fit:contain}
+.brand{font-family:'Fredoka',sans-serif;font-weight:700;letter-spacing:.18em;font-size:13px;opacity:.9}
+h1{font-family:'Fredoka',sans-serif;font-weight:700;line-height:1;margin:10px 0 8px;
+  font-size:clamp(40px,9vw,68px);text-shadow:0 4px 0 rgba(0,0,0,.18)}
+h1 .r{color:#ff6b6f} h1 .g{color:#7fd88f}
+.branch{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--red);
+  padding:7px 18px 7px 10px;border-radius:999px;font-size:20px;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.branch img{width:30px;height:30px}
+.sub{margin-top:12px;font-size:16px;opacity:.95}
+.hero .deco{position:absolute;z-index:2;width:58px;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(4deg)}}
+
+/* ---------- main ---------- */
+main{position:relative;z-index:3;max-width:1080px;margin:-70px auto 0;padding:0 16px 40px}
+.hello{display:flex;align-items:center;gap:14px;background:#fff;border-radius:26px;padding:14px 20px;
+  box-shadow:0 10px 30px rgba(29,47,107,.15);margin-bottom:22px}
+.hello img{width:84px;flex:none}
+.hello b{font-size:22px;color:var(--red)} .hello p{color:var(--soft);font-size:15px;margin-top:2px}
+
+.grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.grid.one{grid-template-columns:minmax(0,640px);justify-content:center}
+.card{position:relative;background:#fff;border-radius:28px;padding:16px;
+  box-shadow:0 10px 30px rgba(29,47,107,.14);border:3px solid #fff}
+.card:nth-child(3n+1){border-color:#ffd6d7} .card:nth-child(3n+2){border-color:#cdebd6} .card:nth-child(3n+3){border-color:#fbe6a8}
+.card .sticker{position:absolute;top:-22px;right:-8px;width:56px;transform:rotate(12deg)}
+.card h2{display:flex;align-items:center;gap:8px;font-size:24px;font-weight:400;margin:2px 4px 12px}
+.card h2 img{width:34px}
+.card h2 small{font-size:15px;color:var(--soft);margin-left:auto}
+.screen{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:var(--night);cursor:pointer}
+.screen .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 80%;filter:saturate(1.05)}
+.screen .playbig{position:absolute;left:50%;top:50%;width:84px;transform:translate(-50%,-50%);
+  transition:transform .15s;filter:drop-shadow(0 6px 10px rgba(0,0,0,.3))}
+.screen:hover .playbig{transform:translate(-50%,-50%) scale(1.08)}
+.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.screen.empty{cursor:default;display:grid;place-items:center;color:#fff;font-size:18px;background:linear-gradient(135deg,var(--night),var(--night2))}
+.screen.empty img{width:70px;margin:0 auto 6px;animation:bob 3s ease-in-out infinite}
+
+.btns{display:flex;gap:10px;margin-top:14px}
+.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:16px;
+  padding:11px 10px;font:inherit;font-size:18px;color:#fff;cursor:pointer;text-decoration:none;
+  box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
+.btn img{width:28px;height:28px}
+.btn.play{background:var(--red)} .btn.dl{background:var(--green)}
+.btn[aria-disabled=true]{background:#c9cde0;pointer-events:none;box-shadow:none}
+
+.tip{margin:26px auto 0;max-width:640px;background:#fff;border-radius:22px;padding:16px 20px;
+  color:var(--soft);font-size:15px;line-height:1.6;box-shadow:0 6px 20px rgba(29,47,107,.1)}
+.tip b{color:var(--ink)}
+footer{text-align:center;padding:10px 16px 46px;color:var(--soft);font-size:14px}
+footer img{width:110px;margin:0 auto 6px}
+
+@media (max-width:600px){
+  .hero .top{padding-top:24px} .hero .deco{width:42px} .hero .deco.hm{display:none}
+  .grid{grid-template-columns:1fr}
+  .hello img{width:64px} .hello b{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="snow" id="snow"></div>
+
+<header class="hero">
+  <img class="bg" src="../images/xmas/banner.jpg" alt="">
+  <img class="deco" src="../images/xmas/snowflake.png" alt="" style="left:6%;top:40px">
+  <img class="deco" src="../images/xmas/star.png" alt="" style="right:7%;top:56px;animation-delay:-1.2s">
+  <img class="deco" class="deco hm" src="../images/xmas/bell.png" alt="" style="right:18%;top:170px;animation-delay:-2s">
+  <img class="deco hm" src="../images/xmas/candy-cane.png" alt="" style="left:15%;top:180px;animation-delay:-.6s">
+  <div class="top">
+    <img class="logo" src="../images/logo-round.png" alt="Unique English" onerror="this.style.display='none'">
+    <div class="brand">UNIQUE ENGLISH MUSICAL</div>
+    <h1><span class="r">Christmas</span><br><span class="g">Musical</span></h1>
+    <div class="branch"><img src="../images/xmas/tree.png" alt="">해운대</div>
+    <p class="sub">영상을 보고, 고화질로 내려받을 수 있어요</p>
+  </div>
+</header>
+
+<main>
+  <div class="hello">
+    <img src="../images/xmas/snowman-wave.png" alt="">
+    <div><b>Merry Christmas!</b><p>우리 반 영상의 ▶ 보기를 누르면 재생돼요.</p></div>
+  </div>
+
+  <section class="grid" id="grid"></section>
+
+  <div class="tip">
+    <b>⬇️ 고화질 다운로드</b><br>
+    「내려받기」를 누르면 구글 드라이브가 열려요. 파일이 크면 <b>"그래도 다운로드"</b>를 한 번 더 눌러 주세요.<br>
+    아이폰은 다운로드 후 <b>파일 앱 → 다운로드</b>에서 열고, 공유 버튼으로 <b>동영상 저장</b>하면 사진첩에 들어가요.
+  </div>
+</main>
+
+<footer>
+  <img src="../images/xmas/snowman-camera.png" alt="">
+  © Unique English · Christmas Musical 2026
+</footer>
+
+<script>
+/* =====================================================
+   ★ 영상 넣는 곳 ★
+   - cls  : 반 이름 (예: '초3A')
+   - title: 작품 이름 (없으면 '' 그대로)
+   - link : 구글 드라이브 공유 링크를 통째로 붙여 넣기
+            (공유 설정: '링크가 있는 모든 사용자')
+   - link가 비어 있으면 '영상 준비 중'으로 보여요.
+   ===================================================== */
+const VIDEOS = [
+  { cls: '초2A', title: '', link: '' },
+  { cls: '초2B', title: '', link: '' },
+  { cls: '초3B', title: '', link: '' },
+];
+
+const ICONS = ['gift','reindeer','gingerbread','penguin','stocking','cocoa'];
+const STICK = ['candy-cane','bell','snowflake','star','santa-hat','tree'];
+const IMG = n => '../images/xmas/' + n + '.png';
+
+function driveId(link){
+  if(!link) return '';
+  const m = link.match(/\/d\/([\w-]{10,})/) || link.match(/[?&]id=([\w-]{10,})/);
+  return m ? m[1] : (/^[\w-]{20,}$/.test(link.trim()) ? link.trim() : '');
+}
+
+const grid = document.getElementById('grid');
+if (VIDEOS.length === 1) grid.classList.add('one');
+
+VIDEOS.forEach((v, i) => {
+  const id = driveId(v.link);
+  const card = document.createElement('article');
+  card.className = 'card';
+  card.innerHTML = `
+    <img class="sticker" src="${IMG(STICK[i % STICK.length])}" alt="">
+    <h2><img src="${IMG(ICONS[i % ICONS.length])}" alt="">${v.cls}${v.title ? `<small>${v.title}</small>` : ''}</h2>
+    ${id ? `
+      <div class="screen" role="button" aria-label="${v.cls} 영상 보기">
+        <img class="poster" src="../images/xmas/banner.jpg" alt="">
+        <img class="playbig" src="${IMG('play')}" alt="">
+      </div>` : `
+      <div class="screen empty"><div><img src="${IMG('snowman-popcorn')}" alt="">영상 준비 중이에요</div></div>`}
+    <div class="btns">
+      <button class="btn play" ${id ? '' : 'aria-disabled="true"'}><img src="${IMG('clapper')}" alt="">보기</button>
+      <a class="btn dl" ${id ? `href="https://drive.google.com/uc?export=download&id=${id}" target="_blank" rel="noopener"` : 'aria-disabled="true"'}><img src="${IMG('download')}" alt="">내려받기</a>
+    </div>`;
+  if (id) {
+    const screen = card.querySelector('.screen');
+    const play = () => {
+      if (screen.querySelector('iframe')) return;
+      screen.innerHTML = `<iframe src="https://drive.google.com/file/d/${id}/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+      screen.scrollIntoView({behavior:'smooth', block:'center'});
+    };
+    screen.addEventListener('click', play);
+    card.querySelector('.btn.play').addEventListener('click', play);
+  }
+  grid.appendChild(card);
+});
+
+/* falling snow */
+(() => {
+  const box = document.getElementById('snow');
+  const n = window.innerWidth < 600 ? 28 : 50;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('i');
+    const size = 3 + Math.random() * 6;
+    s.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;` +
+      `animation-duration:${8 + Math.random()*10}s;animation-delay:${-Math.random()*18}s;` +
+      `--dx:${(Math.random()*80-40).toFixed(0)}px;opacity:${(.5+Math.random()*.5).toFixed(2)}`;
+    box.appendChild(s);
+  }
+})();
+</script>
+</body>
+</html>
